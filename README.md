@@ -1,5 +1,6 @@
 # matrix
 
+## 配置文件 Config.toml
 ```toml
 #随机字符
 characters = "0123456789"
@@ -36,6 +37,8 @@ fullscreen=true
 window_width=640
 window_height=480
 ```
+
+## 运行截图
 
 <img src="images/01.png" />
 
