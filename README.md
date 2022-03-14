@@ -1,5 +1,5 @@
 # matrix
-
+[![](https://img.shields.io/badge/latest-1.0.0-red.svg)](https://github.com/planet0104/matrix/releases)
 ## 配置文件 Config.toml
 ```toml
 #随机字符
