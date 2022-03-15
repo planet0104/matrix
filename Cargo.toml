@@ -1,16 +1,20 @@
 [package]
 name = "matrix"
-version = "1.0.0"
+version = "0.1.0"
 edition = "2021"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [dependencies]
-macroquad = "0.3.15"
-quad-rand = "0.2.1"
-instant = "0.1.12"
-csscolorparser = "0.5.0"
-toml = "0.5.8"
-serde = { version = "1.0", features = ["derive"] }
+minifb = "0.20.0"
+raqote = { git="https://github.com/jrmuizel/raqote" }
+font-kit = "0.10"
+anyhow = "1"
 once_cell = "1.10.0"
+serde = { version = "1.0", features = ["derive"] }
+rand = "0.8.5"
+toml = "0.5.8"
+csscolorparser = "0.5.0"
 
 [build-dependencies]
-winres = "0.1"
+winres = "0.1.12"
