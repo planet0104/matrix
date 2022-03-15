@@ -1,6 +1,6 @@
 # matrix
 
-[![](https://img.shields.io/badge/latest-1.0.0-red.svg)](https://github.com/planet0104/matrix/releases)
+[![](https://img.shields.io/badge/latest-1.0.1-red.svg)](https://github.com/planet0104/matrix/releases)
 
 **运行仅占用1%的CPU，10M左右内存，不占用GPU资源。**
 
