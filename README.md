@@ -1,29 +1,43 @@
-# matrix
+# matrix 屏保
 
-[![](https://img.shields.io/badge/latest-1.0.1-red.svg)](https://github.com/planet0104/matrix/releases)
+[![](https://img.shields.io/badge/latest-1.0.2-red.svg)](https://github.com/planet0104/matrix/releases)
 
-**运行仅占用1%的CPU，10M左右内存，不占用GPU资源。**
+**运行仅占用1~3%的CPU，20M左右内存，不占用GPU资源。**
 
-```text
-运行之前，将配置文件改为fullscreen=true，然后计算并修改窗口大小
-计算方式:
-屏幕实际分辨率=2880x1800 缩放=200% 那么窗口宽=2880/2=1440, 高=1800/2=900
-屏幕实际分辨率=1920x1080 缩放=100% 那么窗口宽=1920, 高=1080
-```
+## 安装屏保
+
+右键点击matrix.scr，选择“安装”
+
+<img src="images/install.png" />
+
+打开屏幕保护程序，选择matrix
+
+<img src="images/setscr.png" />
+
+## 快捷键
+
+### 进入全屏/退出全屏
+
+*F11*
+
+### 退出程序
+*ESC、Alt+F4、移动鼠标*
 
 ## 配置文件 Config.toml
-```toml
-#随机字符
-characters = "0123456789"
 
-# 字体 "1"->凤凰点阵体 "2"->小篆 "3"->甲骨文 "字体文件名.ttf"->自定义ttf文件
+*在程序文件所在目录下创建Config.toml，所有配置均为可选项*
+
+```toml
+# 随机字符
+characters = "01"
+
+# 字体配置 "1"->凤凰点阵体 "2"->小篆 "3"->甲骨文 "字体文件名.ttf"->自定义ttf文件
 font = "1"
 
-# font = "fonts/VonwaonBitmap-16px.ttf"
 # 字号
-font_size = 16
+font_size = 12
 
-# 字符上下间距
+# 字符间距
 spaceing = 0
 
 # 字符突变率 0不突变
@@ -31,14 +45,15 @@ mutation_rate = 0.001
 
 # 闪光颜色
 light_color="#fff"
-# 闪光消失速度（alpha透明度255递减)
+
+# 闪光消失速度
 light_speed=200
 
-# 消失速度 （alpha透明度255递减)
+# 消失速度
 fade_speed=10
 
-# 雨帘前进延时(毫秒)
-step_delay=60
+# 前进延时
+frame_delay = 50
 
 # 文字颜色
 color="rgb(0, 255, 70)"
@@ -49,12 +64,12 @@ background="#000"
 # 全屏模式
 fullscreen=true
 
-# 窗口大小
-window_width=1920
-window_height=1080
+# 逻辑渲染分辨率，值越大显示效果越清晰，但是CPU占用率也越高（最高不超过窗口物理分辨率）
+logical_size=640
 
-# 帧延时 1000/50=20帧 延时越小，CPU占用率越高
-frame_delay = 50
+# 窗口大小(全屏模式不起作用)
+window_width=900
+window_height=600
 ```
 
 ## 运行截图

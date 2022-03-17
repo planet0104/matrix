@@ -1,12 +1,9 @@
 [package]
 name = "matrix"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-minifb = "0.20.0"
 raqote = { git="https://github.com/jrmuizel/raqote" }
 font-kit = "0.10"
 anyhow = "1"
@@ -15,6 +12,16 @@ serde = { version = "1.0", features = ["derive"] }
 rand = "0.8.5"
 toml = "0.5.8"
 csscolorparser = "0.5.0"
+winit = "0.26.1"
+winit_input_helper = "0.11"
+image = "0.24.1"
+softbuffer = "0.1.0"
+fast_image_resize = "0.7.0"
 
 [build-dependencies]
 winres = "0.1.12"
+
+[profile.release]
+lto = true
+panic = 'abort'
+opt-level = 's'
