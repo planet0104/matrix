@@ -176,32 +176,32 @@ impl CharacterString {
 }
 
 pub fn init(cfg: &Config, width: u32, height: u32) -> Vec<CharacterString> {
-    let font_size = cfg.font_size() as f32;
+    let font_size = cfg.font_size;
 
     let color = cfg.color();
 
     let mut strings = vec![];
 
     let columns = width / font_size as u32;
-    let rows = (height / (font_size as u32 + cfg.spaceing())) + 1;
+    let rows = (height / (font_size as u32 + cfg.spaceing)) + 1;
 
     for col in 0..columns {
         strings.push(CharacterString {
             rng: rand::thread_rng(),
-            font_size,
+            font_size: cfg.font_size as f32,
             color,
             light_color: cfg.light_color(),
-            light_speed: cfg.light_speed() as i32,
-            mutation_rate: cfg.mutation_rate(),
-            tiles: cfg.characters().chars().collect(),
+            light_speed: cfg.light_speed,
+            mutation_rate: cfg.mutation_rate,
+            tiles: cfg.characters_plain().chars().collect(),
             characters: vec![],
-            frame_delay: cfg.frame_delay(),
+            frame_delay: cfg.frame_delay,
             max_len: rows as usize,
             current_index: 0,
             delay: 0,
             x: col as f32 * font_size as f32,
-            fade_speed: cfg.fade_speed() as i32,
-            spacing: cfg.spaceing(),
+            fade_speed: cfg.fade_speed,
+            spacing: cfg.spaceing,
         });
     }
 

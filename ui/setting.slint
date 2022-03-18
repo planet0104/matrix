@@ -1,0 +1,212 @@
+
+import { AboutSlint, VerticalBox, Button, HorizontalBox, TextEdit, GroupBox, LineEdit, ComboBox } from "std-widgets.slint";
+
+SettingWindow := Window {
+    title: "matrix屏保设置(快捷键F11)";
+    icon: @image-url("../favicon.png");
+
+    property <string> characters;
+    property <string> text_color;
+    property <string> font_type;
+    property <string> font_size;
+    property <string> spaceing;
+    property <string> background_color;
+    property <string> fullscreen;
+    property <string> logical_size;
+    property <string> light_color;
+    property <string> frame_delay;
+    property <string> fade_speed;
+    property <string> light_speed;
+    property <string> mutation_rate;
+    
+    callback value_change(string, string);
+
+    VerticalBox {
+        HorizontalBox {
+            padding-right: 0px;
+            Image {
+                opacity: 0.8;
+                source: @image-url("../favicon.png");
+                width: 65px;
+                height: 65px;
+            }
+            VerticalBox {
+                padding-top: 0px;
+                Text { font-size: 16px; font-weight: 600; text: "matrix 1.0.3"; }
+                Text { font-size: 12px; text: "作者: Jia Ye  Email: planet2@qq.com"; }
+                Text { font-size: 12px; text: "源码: https://github.com/planet0104/matrix"; }
+            }
+            Button { 
+                text: "保存";
+                clicked => { value_change("save", "") }
+            }
+        }
+        HorizontalBox {
+            padding-right: 4px;
+            VerticalBox {padding-right: 0; padding-top: 0px; Text { font-weight: 700; text: "随机字符:"; } }
+            txt_characters := TextEdit {
+                text: characters;
+                edited => { value_change("characters", txt_characters.text) }
+                height: 80px;
+                wrap: word-wrap;
+            }
+            GroupBox{
+                width: 90px;
+                title: "内置文字";
+                padding-top: 5px;
+                padding-bottom: 5px;
+                cb_characters := ComboBox {
+                    selected => { value_change("characters_select", cb_characters.current-value) }
+                    width: 90px;
+                    model: ["二进制",  "日文", "小篆", "甲骨文"];
+                    current-value: "二进制";
+                }
+            }
+        }
+        HorizontalLayout{
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "文字颜色:"; } }
+                edit_color := LineEdit {
+                    edited => { value_change("color", edit_color.text) }
+                    width: 90px;
+                    text: text_color;
+                    placeholder-text: "rgb(0, 255, 70)";
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "内置字体:"; } }
+                cb_font := ComboBox {
+                    selected => { value_change("font", cb_font.current-value) }
+                    width: 90px;
+                    model: ["默认", "小篆", "甲骨文"];
+                    current-value: font_type;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "字体大小:"; } }
+                cb_font_size := ComboBox {
+                    selected => { value_change("font_size", cb_font_size.current-value) }
+                    width: 90px;
+                    model: ["12", "16", "20", "24", "28", "32", "40", "64"];
+                    current-value: font_size;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "字符间距:"; } }
+                cb_spaceing := ComboBox {
+                    selected => { value_change("spaceing", cb_spaceing.current-value) }
+                    width: 90px;
+                    model: ["0", "2", "4", "6", "8", "10"];
+                    current-value: spaceing;
+                }
+            }
+        }
+        HorizontalLayout{
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "背景颜色:"; } }
+                edit_background := LineEdit {
+                    edited => { value_change("background", edit_background.text) }
+                    width: 90px;
+                    text: background_color;
+                    placeholder-text: "black";
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "全屏模式:"; } }
+                cb_fullscreen := ComboBox {
+                    selected => { value_change("fullscreen", cb_fullscreen.current-value) }
+                    width: 90px;
+                    model: ["是", "否"];
+                    current-value: fullscreen;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 4px; Text { font-weight: 700; text: "分 辨 率:"; } }
+                cb_logical_size := ComboBox {
+                    selected => { value_change("logical_size", cb_logical_size.current-value) }
+                    width: 90px;
+                    model: ["640", "720", "900", "1200", "1600", "1900"];
+                    current-value: logical_size;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "闪光颜色:"; } }
+                edit_light_color := LineEdit {
+                    edited => { value_change("light_color", edit_light_color.text) }
+                    width: 90px;
+                    text: light_color;
+                    placeholder-text: "white";
+                }
+            }
+        }
+        HorizontalLayout{
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "前进延时:"; } }
+                cb_frame_delay := ComboBox {
+                    selected => { value_change("frame_delay", cb_frame_delay.current-value) }
+                    width: 90px;
+                    model: ["40毫秒", "50毫秒", "60毫秒", "80毫秒", "100毫秒"];
+                    current-value: frame_delay;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "消失速度:"; } }
+                cb_fade_speed := ComboBox {
+                    selected => { value_change("fade_speed", cb_fade_speed.current-value) }
+                    width: 90px;
+                    model: ["2", "4", "6", "8", "10"];
+                    current-value: fade_speed;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 4px; Text { font-weight: 700; text: "闪光速度:"; } }
+                cb_light_speed := ComboBox {
+                    selected => { value_change("light_speed", cb_light_speed.current-value) }
+                    width: 90px;
+                    model: ["20", "50", "100", "150", "200"];
+                    current-value: light_speed;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "突变速率:"; } }
+                cb_mutation_rate := ComboBox {
+                    selected => { value_change("mutation_rate", cb_mutation_rate.current-value) }
+                    width: 90px;
+                    model: ["0.01", "0.02", "0.03", "0.04", "0.05"];
+                    current-value: mutation_rate;
+                }
+            }
+        }
+        HorizontalLayout {
+            alignment: center;
+            padding-bottom: 20px;
+            VerticalBox {
+                alignment: center;
+                HorizontalBox {
+                    alignment: center;
+                    Text { color: #888; font-size: 10px; font-weight: 100; text: "UI Made with Slint"; }
+                }
+                Image {
+                    source: @image-url("slint-logo-light.svg");
+                }
+                Text {
+                    text: "Version 0.2.2\nhttps://slint-ui.com/";
+                    font-size: 10px;
+                    horizontal-alignment: center;
+                }
+            }
+        }
+    }
+}

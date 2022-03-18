@@ -1,6 +1,6 @@
 [package]
 name = "matrix"
-version = "1.0.0"
+version = "1.0.3"
 description = "代码雨"
 authors = ["Jia Ye <planet0104@gmail.com>"]
 license = "MIT"
@@ -8,10 +8,9 @@ repository = "https://github.com/planet0104/matrix"
 edition = "2021"
 
 [dependencies]
-raqote = { git="https://github.com/jrmuizel/raqote" }
-font-kit = "0.10"
+raqote = "0.8.0"
+font-kit = "0.7"
 anyhow = "1"
-once_cell = "1.10.0"
 serde = { version = "1.0", features = ["derive"] }
 rand = "0.8.5"
 toml = "0.5.8"
@@ -21,6 +20,12 @@ winit_input_helper = "0.11"
 image = "0.24.1"
 softbuffer = "0.1.0"
 fast_image_resize = "0.7.0"
+slint = "0.2.1"
+dirs = "4.0.0"
+notify = "5.0.0-pre.14"
+temp-dir = "0.1.11"
+app_dirs = { package = "app_dirs2", version = "2.3" }
+once_cell = "1.10.0"
 
 [build-dependencies]
 winres = "0.1.12"
