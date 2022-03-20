@@ -8,6 +8,8 @@ use std::{
     path::PathBuf,
 };
 
+use crate::setting::alert;
+
 // 凤凰点阵体
 pub const FONT_VONWAON: &[u8] = include_bytes!("../fonts/VonwaonBitmap-16px.ttf");
 // 小篆
@@ -165,8 +167,31 @@ pub fn load_font_file(cfg: &Config) -> Vec<u8> {
         FONT_FZ_JIAGUWEN.to_vec()
     } else if font_name == "4" {
         FONT_WUFO.to_vec()
-    } else {
+    } else if font_name == "1" {
         FONT_VONWAON.to_vec()
+    } else {
+        match File::open(&font_name) {
+            Ok(mut file) => {
+                let mut buf = vec![];
+                if let Err(err) = file.read_to_end(&mut buf) {
+                    alert(
+                        "错误",
+                        &format!("字体文件读取失败:{} 错误原因:{:?}", font_name, err),
+                    );
+                    FONT_VONWAON.to_vec()
+                } else {
+                    println!("字体文件读取成功：{}", font_name);
+                    buf
+                }
+            }
+            Err(err) => {
+                alert(
+                    "错误",
+                    &format!("字体文件读取失败:{} 错误原因:{:?}", font_name, err),
+                );
+                FONT_VONWAON.to_vec()
+            }
+        }
     }
 }
 

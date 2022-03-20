@@ -68,11 +68,11 @@ SettingWindow := Window {
             
             HorizontalBox {
                 width: 170px;
-                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "内置字体:"; } }
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "选择字体:"; } }
                 cb_font := ComboBox {
                     selected => { value_change("font", cb_font.current-value) }
                     width: 90px;
-                    model: ["默认", "小篆", "甲骨文"];
+                    model: ["默认", "小篆", "甲骨文", "字体文件"];
                     current-value: font_type;
                 }
             }

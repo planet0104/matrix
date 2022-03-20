@@ -1,4 +1,4 @@
-#![windows_subsystem = "windows"]
+// #![windows_subsystem = "windows"]
 
 use anyhow::Result;
 mod app;
@@ -9,6 +9,8 @@ mod setting;
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> Result<()> {
     use std::env;
+
+    use crate::setting::alert;
 
     let args: Vec<String> = env::args().collect();
     for arg in &args[1..] {
@@ -25,7 +27,11 @@ fn main() -> Result<()> {
     }
 
     //启动屏保
-    app::run()
+    if let Err(err) = app::run() {
+        eprintln!("{:?}", err);
+        alert("错误", &format!("启动失败: {:?}", err));
+    }
+    Ok(())
 }
 
 #[cfg(target_arch = "wasm32")]

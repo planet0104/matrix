@@ -1,11 +1,11 @@
 //设置程序
-
 use std::{cell::RefCell, env::current_exe, process::Command, rc::Rc};
 
 use crate::config::{
     read_config, write_config, CHARACTERS_01, CHARACTERS_JAP, CHARACTERS_JIAGUWEN,
     CHARACTERS_ZHUANTI,
 };
+use native_dialog::{FileDialog, MessageDialog, MessageType};
 use slint::{quit_event_loop, SharedString};
 
 slint::slint! {
@@ -29,8 +29,10 @@ pub fn open() {
                 "甲骨文"
             } else if cfg.font == "4" {
                 "永无BUG"
-            } else {
+            } else if cfg.font == "1" {
                 "默认"
+            } else {
+                "字体文件"
             };
             window.set_font_type(SharedString::from(font_type));
             window.set_font_size(SharedString::from(&format!("{}", cfg.font_size)));
@@ -124,6 +126,28 @@ pub fn open() {
                     cfg.font = "3".to_string();
                 } else if val == "永无BUG" {
                     cfg.font = "4".to_string();
+                } else if val == "字体文件" {
+                    match FileDialog::new()
+                        .add_filter("TTF字体文件", &["ttf"])
+                        .show_open_single_file()
+                    {
+                        Ok(path) => {
+                            if path
+                                .and_then(|a| {
+                                    a.to_str().and_then(|str| {
+                                        cfg.font = str.to_string();
+                                        Some(str.to_string())
+                                    })
+                                })
+                                .is_none()
+                            {
+                                alert("提示", "未选择字体")
+                            }
+                        }
+                        Err(err) => {
+                            alert("错误", &format!("{:?}", err));
+                        }
+                    }
                 } else {
                     cfg.font = "1".to_string();
                 }
@@ -176,7 +200,7 @@ pub fn open() {
             } else if cmd == "save" {
                 //保存配置
                 if let Err(err) = write_config(&cfg.clone()) {
-                    eprintln!("配置文件写入失败:{:?}", err);
+                    alert("错误", &format!("配置文件写入失败:{:?}", err));
                 }
                 quit_event_loop();
                 false
@@ -194,5 +218,16 @@ pub fn open() {
 pub fn open_self() {
     if let Ok(exe_pah) = current_exe() {
         let _ = Command::new(exe_pah).arg("/c").spawn();
+    }
+}
+
+pub fn alert(title: &str, text: &str) {
+    if let Err(err) = MessageDialog::new()
+        .set_type(MessageType::Info)
+        .set_title(title)
+        .set_text(text)
+        .show_alert()
+    {
+        println!("{:?}", err);
     }
 }

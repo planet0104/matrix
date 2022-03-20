@@ -87,7 +87,7 @@ impl<'a> App<'a> {
 }
 
 pub fn run() -> Result<()> {
-    let create_window = || {
+    let create_window = || -> Result<(config::Config, App<'_>, GlutinWindow, piston::Events)> {
         let config = read_config();
 
         let mut window: GlutinWindow = WindowSettings::new("matrix", [900, 600])
@@ -95,13 +95,13 @@ pub fn run() -> Result<()> {
             .exit_on_esc(true)
             .fullscreen(config.fullscreen)
             .build()
-            .unwrap();
+            .map_err(|err| anyhow!("{:?}", err))?;
         //隐藏鼠标
         window.set_capture_cursor(true);
 
         let max_fps = (1000.0 / config.frame_delay as f64) as u64;
 
-        let app = App::new().unwrap();
+        let app = App::new()?;
 
         let events = Events::new(EventSettings {
             max_fps,
@@ -109,7 +109,7 @@ pub fn run() -> Result<()> {
             ..Default::default()
         });
 
-        (config, app, window, events)
+        Ok((config, app, window, events))
     };
 
     let mut reload = true;
@@ -150,7 +150,7 @@ pub fn run() -> Result<()> {
 
     while reload {
         reload = false;
-        let (mut config, mut app, mut window, mut events) = create_window();
+        let (mut config, mut app, mut window, mut events) = create_window()?;
 
         while let Some(e) = events.next(&mut window) {
             // println!("event={:?}", e);
@@ -176,10 +176,6 @@ pub fn run() -> Result<()> {
                     }
                 }
             }
-
-            // if let Some(_args) = e.mouse_cursor_args() {
-
-            // }
 
             if let Some(args) = e.resize_args() {
                 if let Some(old_size) = old_window_size.as_ref() {
