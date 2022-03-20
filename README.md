@@ -1,6 +1,6 @@
 # matrix 屏保
 
-[![](https://img.shields.io/badge/latest-1.0.4-red.svg)](https://github.com/planet0104/matrix/releases)
+[![](https://img.shields.io/badge/latest-1.0.5-red.svg)](https://github.com/planet0104/matrix/releases)
 
 **运行占用1~3%的CPU**
 
@@ -36,6 +36,10 @@
 **ESC** >> 退出程序(或者移动鼠标600ms)
 
 ## 运行截图
+
+<img src="images/05.png" />
+
+<img src="images/06.png" />
 
 <img src="images/01.png" />
 

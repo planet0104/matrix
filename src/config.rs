@@ -14,6 +14,8 @@ pub const FONT_VONWAON: &[u8] = include_bytes!("../fonts/VonwaonBitmap-16px.ttf"
 const FONT_XIAO_ZHUAN: &[u8] = include_bytes!("../fonts/xiaozhuan.ttf");
 // 方正甲骨文
 const FONT_FZ_JIAGUWEN: &[u8] = include_bytes!("../fonts/FZJiaGuWen.ttf");
+// 永无BUG
+const FONT_WUFO: &[u8] = include_bytes!("../fonts/无佛.ttf");
 
 pub const CHARACTERS_JAP: &str = r#"
     アイウエオカキクケコサシスセソタチツテトナニヌ
@@ -161,7 +163,9 @@ pub fn load_font_file(cfg: &Config) -> Vec<u8> {
         FONT_XIAO_ZHUAN.to_vec()
     } else if font_name == "3" {
         FONT_FZ_JIAGUWEN.to_vec()
-    } else {
+    } else if font_name == "4" {
+        FONT_WUFO.to_vec()
+    }  else {
         FONT_VONWAON.to_vec()
     }
 }

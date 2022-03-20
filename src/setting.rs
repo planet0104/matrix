@@ -4,7 +4,7 @@ use std::{cell::RefCell, env::current_exe, process::Command, rc::Rc};
 
 use crate::config::{
     read_config, write_config, CHARACTERS_01, CHARACTERS_JAP, CHARACTERS_JIAGUWEN,
-    CHARACTERS_ZHUANTI,
+    CHARACTERS_ZHUANTI
 };
 use slint::{quit_event_loop, SharedString};
 
@@ -27,7 +27,9 @@ pub fn open() {
                 "小篆"
             } else if cfg.font == "3" {
                 "甲骨文"
-            } else {
+            }else if cfg.font == "4"{
+                "永无BUG"
+            }else {
                 "默认"
             };
             window.set_font_type(SharedString::from(font_type));
@@ -68,15 +70,51 @@ pub fn open() {
                 if val == "小篆" {
                     cfg.set_characters(CHARACTERS_ZHUANTI);
                     cfg.font = "2".to_string();
+                    cfg.font_size = 20;
+                    cfg.vspaceing = 8;
+                    cfg.hspaceing = 8;
+                    cfg.frame_delay = 50;
+                    cfg.fade_speed = 8;
                 } else if val == "甲骨文" {
                     cfg.set_characters(CHARACTERS_JIAGUWEN);
                     cfg.font = "3".to_string();
+                    cfg.font_size = 20;
+                    cfg.vspaceing = 8;
+                    cfg.hspaceing = 2;
+                    cfg.frame_delay = 50;
+                    cfg.fade_speed = 8;
                 } else if val == "日文" {
                     cfg.set_characters(CHARACTERS_JAP);
                     cfg.font = "1".to_string();
-                } else {
+                    cfg.font_size = 16;
+                    cfg.vspaceing = 6;
+                    cfg.hspaceing = 6;
+                    cfg.frame_delay = 50;
+                    cfg.fade_speed = 8;
+                } else if val == "永无BUG1" {
+                    cfg.set_characters("无佛");
+                    cfg.font = "4".to_string();
+                    cfg.font_size = 32;
+                    cfg.vspaceing = 16;
+                    cfg.hspaceing = 16;
+                    cfg.frame_delay = 80;
+                    cfg.fade_speed = 12;
+                } else if val == "永无BUG2" {
+                    cfg.set_characters("01");
+                    cfg.font = "4".to_string();
+                    cfg.font_size = 64;
+                    cfg.vspaceing = 25;
+                    cfg.hspaceing = 0;
+                    cfg.frame_delay = 80;
+                    cfg.fade_speed = 12;
+                }  else {
                     cfg.set_characters(CHARACTERS_01);
                     cfg.font = "1".to_string();
+                    cfg.font_size = 20;
+                    cfg.vspaceing = 6;
+                    cfg.hspaceing = 6;
+                    cfg.frame_delay = 50;
+                    cfg.fade_speed = 8;
                 }
                 true
             } else if cmd == "font" {
@@ -84,7 +122,9 @@ pub fn open() {
                     cfg.font = "2".to_string();
                 } else if val == "甲骨文" {
                     cfg.font = "3".to_string();
-                } else {
+                } else if val == "永无BUG" {
+                    cfg.font = "4".to_string();
+                }  else {
                     cfg.font = "1".to_string();
                 }
                 false

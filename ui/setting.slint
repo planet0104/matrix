@@ -33,7 +33,7 @@ SettingWindow := Window {
             }
             VerticalBox {
                 padding-top: 0px;
-                Text { font-size: 16px; font-weight: 600; text: "matrix 1.0.4"; }
+                Text { font-size: 16px; font-weight: 600; text: "matrix 1.0.5"; }
                 Text { font-size: 12px; text: "作者: Jia Ye  Email: planet2@qq.com"; }
                 Text { font-size: 12px; text: "源码: https://github.com/planet0104/matrix"; }
             }
@@ -59,7 +59,7 @@ SettingWindow := Window {
                 cb_characters := ComboBox {
                     selected => { value_change("characters_select", cb_characters.current-value) }
                     width: 90px;
-                    model: ["二进制",  "日文", "小篆", "甲骨文"];
+                    model: ["二进制",  "日文", "小篆", "甲骨文", "永无BUG1", "永无BUG2"];
                     current-value: "二进制";
                 }
             }
@@ -92,7 +92,7 @@ SettingWindow := Window {
                 cb_hspaceing := ComboBox {
                     selected => { value_change("hspaceing", cb_hspaceing.current-value) }
                     width: 90px;
-                    model: ["0", "2", "4", "6", "8", "10"];
+                    model: ["0", "4", "8", "16", "20", "25"];
                     current-value: hspaceing;
                 }
             }
@@ -102,7 +102,7 @@ SettingWindow := Window {
                 cb_vspaceing := ComboBox {
                     selected => { value_change("vspaceing", cb_vspaceing.current-value) }
                     width: 90px;
-                    model: ["0", "2", "4", "6", "8", "10"];
+                    model: ["0", "4", "8", "16", "20", "25"];
                     current-value: vspaceing;
                 }
             }
