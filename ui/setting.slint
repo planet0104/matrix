@@ -1,8 +1,8 @@
 
-import { AboutSlint, VerticalBox, Button, HorizontalBox, TextEdit, GroupBox, LineEdit, ComboBox } from "std-widgets.slint";
+import { AboutSlint, VerticalBox, CheckBox, Button, HorizontalBox, TextEdit, GroupBox, LineEdit, ComboBox } from "std-widgets.slint";
 
 SettingWindow := Window {
-    title: "matrix屏保设置(快捷键F11)";
+    title: "matrix屏保设置(F1设置,F11全屏)";
     icon: @image-url("../favicon.png");
 
     property <string> characters;
@@ -12,7 +12,7 @@ SettingWindow := Window {
     property <string> hspaceing;
     property <string> vspaceing;
     property <string> background_color;
-    property <string> fullscreen;
+    property <string> mousequit;
     property <string> logical_size;
     property <string> light_color;
     property <string> frame_delay;
@@ -130,12 +130,12 @@ SettingWindow := Window {
             }
             HorizontalBox {
                 width: 170px;
-                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "全屏模式:"; } }
-                cb_fullscreen := ComboBox {
-                    selected => { value_change("fullscreen", cb_fullscreen.current-value) }
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "监听鼠标:"; } }
+                cb_mousequit := ComboBox {
+                    selected => { value_change("mousequit", cb_mousequit.current-value) }
                     width: 90px;
-                    model: ["是", "否"];
-                    current-value: fullscreen;
+                    model: ["滑动退出", "不监听"];
+                    current-value: mousequit;
                 }
             }
             HorizontalBox {

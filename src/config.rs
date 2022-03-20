@@ -165,7 +165,7 @@ pub fn load_font_file(cfg: &Config) -> Vec<u8> {
         FONT_FZ_JIAGUWEN.to_vec()
     } else if font_name == "4" {
         FONT_WUFO.to_vec()
-    }  else {
+    } else {
         FONT_VONWAON.to_vec()
     }
 }
@@ -186,6 +186,7 @@ pub struct Config {
     pub fullscreen: bool,
     pub mutation_rate: f32,
     pub frame_delay: u64,
+    pub mousequit: bool,
 }
 
 impl Default for Config {
@@ -201,6 +202,7 @@ impl Default for Config {
             fade_speed: 10,
             hspaceing: 6,
             vspaceing: 6,
+            mousequit: true,
             #[cfg(debug_assertions)]
             fullscreen: false,
             #[cfg(not(debug_assertions))]

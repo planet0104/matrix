@@ -4,7 +4,7 @@ use std::{cell::RefCell, env::current_exe, process::Command, rc::Rc};
 
 use crate::config::{
     read_config, write_config, CHARACTERS_01, CHARACTERS_JAP, CHARACTERS_JIAGUWEN,
-    CHARACTERS_ZHUANTI
+    CHARACTERS_ZHUANTI,
 };
 use slint::{quit_event_loop, SharedString};
 
@@ -27,9 +27,9 @@ pub fn open() {
                 "小篆"
             } else if cfg.font == "3" {
                 "甲骨文"
-            }else if cfg.font == "4"{
+            } else if cfg.font == "4" {
                 "永无BUG"
-            }else {
+            } else {
                 "默认"
             };
             window.set_font_type(SharedString::from(font_type));
@@ -37,10 +37,10 @@ pub fn open() {
             window.set_vspaceing(SharedString::from(&format!("{}", cfg.vspaceing)));
             window.set_hspaceing(SharedString::from(&format!("{}", cfg.hspaceing)));
             window.set_background_color(SharedString::from(&cfg.background));
-            window.set_fullscreen(SharedString::from(if cfg.fullscreen {
-                "是"
+            window.set_mousequit(SharedString::from(if cfg.mousequit {
+                "滑动退出"
             } else {
-                "否"
+                "不监听"
             }));
             window.set_light_color(SharedString::from(&cfg.light_color));
             window.set_frame_delay(SharedString::from(&format!("{}毫秒", cfg.frame_delay)));
@@ -107,7 +107,7 @@ pub fn open() {
                     cfg.hspaceing = 0;
                     cfg.frame_delay = 80;
                     cfg.fade_speed = 12;
-                }  else {
+                } else {
                     cfg.set_characters(CHARACTERS_01);
                     cfg.font = "1".to_string();
                     cfg.font_size = 20;
@@ -124,15 +124,15 @@ pub fn open() {
                     cfg.font = "3".to_string();
                 } else if val == "永无BUG" {
                     cfg.font = "4".to_string();
-                }  else {
+                } else {
                     cfg.font = "1".to_string();
                 }
                 false
             } else if cmd == "font_size" {
                 cfg.font_size = val.parse().unwrap();
                 false
-            } else if cmd == "fullscreen" {
-                cfg.fullscreen = val == "是";
+            } else if cmd == "mousequit" {
+                cfg.mousequit = val == "滑动退出";
                 false
             } else if cmd == "vspaceing" {
                 cfg.vspaceing = val.parse().unwrap();

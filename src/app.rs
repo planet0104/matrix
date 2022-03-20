@@ -7,8 +7,9 @@ use piston::input::{RenderArgs, RenderEvent, UpdateArgs, UpdateEvent};
 use piston::window::WindowSettings;
 use piston::{
     event_loop::{EventSettings, Events},
-    Button, ButtonEvent, ButtonState, Key, MouseCursorEvent, ResizeEvent,
+    Button, ButtonEvent, ButtonState, Key, ResizeEvent,
 };
+use piston::{AdvancedWindow, MouseRelativeEvent};
 use std::{
     sync::{Arc, Mutex},
     thread::spawn,
@@ -89,12 +90,14 @@ pub fn run() -> Result<()> {
     let create_window = || {
         let config = read_config();
 
-        let window: GlutinWindow = WindowSettings::new("matrix", [900, 600])
+        let mut window: GlutinWindow = WindowSettings::new("matrix", [900, 600])
             .graphics_api(OPEN_GL_VERSION)
             .exit_on_esc(true)
             .fullscreen(config.fullscreen)
             .build()
             .unwrap();
+        //隐藏鼠标
+        window.set_capture_cursor(true);
 
         let max_fps = (1000.0 / config.frame_delay as f64) as u64;
 
@@ -150,6 +153,7 @@ pub fn run() -> Result<()> {
         let (mut config, mut app, mut window, mut events) = create_window();
 
         while let Some(e) = events.next(&mut window) {
+            // println!("event={:?}", e);
             if cursor_moveing {
                 //超过300秒钟未移动鼠标，标记鼠标停止移动
                 let now = Instant::now();
@@ -158,18 +162,24 @@ pub fn run() -> Result<()> {
                 }
             }
 
-            if let Some(_args) = e.mouse_cursor_args() {
+            if let Some(_args) = e.mouse_relative_args() {
                 last_move_time = Instant::now();
                 if !cursor_moveing {
                     cursor_moveing = true;
                     start_move_time = Instant::now();
                 } else {
-                    if last_move_time - start_move_time > Duration::from_millis(600) {
-                        //持续移动超过600ms，退出
-                        break;
+                    if last_move_time - start_move_time > Duration::from_millis(400) {
+                        //持续移动超过400ms，退出
+                        if config.mousequit {
+                            break;
+                        }
                     }
                 }
             }
+
+            // if let Some(_args) = e.mouse_cursor_args() {
+
+            // }
 
             if let Some(args) = e.resize_args() {
                 if let Some(old_size) = old_window_size.as_ref() {
