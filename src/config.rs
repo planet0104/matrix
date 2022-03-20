@@ -161,7 +161,7 @@ pub fn load_font_file(cfg: &Config) -> Vec<u8> {
         FONT_XIAO_ZHUAN.to_vec()
     } else if font_name == "3" {
         FONT_FZ_JIAGUWEN.to_vec()
-    }else{
+    } else {
         FONT_VONWAON.to_vec()
     }
 }
@@ -187,7 +187,6 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Config {
-            // characters: base64::encode("01".as_bytes()),
             characters: "01".to_string(),
             font: "1".to_string(),
             font_size: 20,
@@ -211,12 +210,15 @@ impl Default for Config {
 impl Config {
     pub fn parse_color(color: &str, default: csscolorparser::Color) -> [f32; 4] {
         let color = csscolorparser::parse(color).unwrap_or(default);
-        [color.r as f32, color.g as f32, color.b as f32, color.a as f32]
+        [
+            color.r as f32,
+            color.g as f32,
+            color.b as f32,
+            color.a as f32,
+        ]
     }
 
     pub fn characters(&self) -> String {
-        // let bytes = base64::decode(&self.characters).expect("解析失败");
-        // String::from_utf8_lossy(&bytes).to_string()
         self.characters.clone()
     }
 
@@ -230,7 +232,6 @@ impl Config {
     }
 
     pub fn set_characters(&mut self, characters: &str) {
-        // let encoded = base64::encode(characters.as_bytes());
         self.characters = characters.to_string();
     }
 

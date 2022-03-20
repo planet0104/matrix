@@ -6,7 +6,7 @@ use crate::config::{
     read_config, write_config, CHARACTERS_01, CHARACTERS_JAP, CHARACTERS_JIAGUWEN,
     CHARACTERS_ZHUANTI,
 };
-use slint::{SharedString, quit_event_loop};
+use slint::{quit_event_loop, SharedString};
 
 slint::slint! {
     import { SettingWindow } from "ui/setting.slint";
@@ -100,7 +100,7 @@ pub fn open() {
             } else if cmd == "hspaceing" {
                 cfg.hspaceing = val.parse().unwrap();
                 false
-            }else if cmd == "fade_speed" {
+            } else if cmd == "fade_speed" {
                 cfg.fade_speed = val.parse().unwrap();
                 false
             } else if cmd == "light_speed" {

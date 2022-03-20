@@ -1,10 +1,10 @@
 use std::time::{Duration, Instant};
 
-use opengl_graphics::{GlyphCache, GlGraphics};
-use rand::{prelude::ThreadRng, Rng};
-use graphics::*;
 use crate::config::Config;
 use anyhow::{anyhow, Result};
+use graphics::*;
+use opengl_graphics::{GlGraphics, GlyphCache};
+use rand::{prelude::ThreadRng, Rng};
 
 pub struct Character {
     pub pos: [f64; 2],
@@ -65,18 +65,32 @@ impl Character {
         }
     }
 
-    pub fn draw(&self, c: &Context, gl:&mut GlGraphics, glyphs: &mut GlyphCache) -> Result<i32>{
+    pub fn draw(&self, c: &Context, gl: &mut GlGraphics, glyphs: &mut GlyphCache) -> Result<i32> {
         let mut count = 0;
         if self.tile_visible {
             let transform = c.transform.trans(self.pos[0], self.pos[1]);
-            text(self.color, self.font_size as u32, &self.tile, glyphs, transform, gl)
+            text(
+                self.color,
+                self.font_size as u32,
+                &self.tile,
+                glyphs,
+                transform,
+                gl,
+            )
             .map_err(|err| anyhow!("{}", err))?;
             count += 1;
         }
 
         if self.light_visible {
             let transform = c.transform.trans(self.pos[0], self.pos[1]);
-            text(self.light_color, self.font_size as u32, &self.tile, glyphs, transform, gl)
+            text(
+                self.light_color,
+                self.font_size as u32,
+                &self.tile,
+                glyphs,
+                transform,
+                gl,
+            )
             .map_err(|err| anyhow!("{}", err))?;
             count += 1;
         }
@@ -109,7 +123,7 @@ pub struct CharacterString {
 
 impl CharacterString {
     pub fn update(&mut self) {
-        if self.start_time.elapsed() < self.delay_time{
+        if self.start_time.elapsed() < self.delay_time {
             return;
         }
         for c in &mut self.characters {
@@ -149,7 +163,12 @@ impl CharacterString {
         }
     }
 
-    pub fn draw(&self, context: &Context, gl:&mut GlGraphics, glyphs: &mut GlyphCache) -> Result<i32> {
+    pub fn draw(
+        &self,
+        context: &Context,
+        gl: &mut GlGraphics,
+        glyphs: &mut GlyphCache,
+    ) -> Result<i32> {
         let mut count = 0;
         for c in &self.characters {
             count += c.draw(context, gl, glyphs)?;
@@ -159,14 +178,10 @@ impl CharacterString {
 }
 
 pub fn init(cfg: &Config, width: u32, height: u32) -> Vec<CharacterString> {
-    // let font_size = cfg.font_size;
-
     let mut strings = vec![];
 
     let columns = width / (cfg.font_size as u32 + cfg.hspaceing) + 1;
     let rows = (height / (cfg.font_size as u32 + cfg.vspaceing)) + 2;
-
-    // println!("init {width}x{height} 列数{columns} 行数{rows} font_size={} split_size={split_size}", cfg.font_size);
 
     for col in 0..columns {
         strings.push(CharacterString {
