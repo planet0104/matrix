@@ -32,14 +32,14 @@ pub fn open() {
             };
             window.set_font_type(SharedString::from(font_type));
             window.set_font_size(SharedString::from(&format!("{}", cfg.font_size)));
-            window.set_spaceing(SharedString::from(&format!("{}", cfg.spaceing)));
+            window.set_vspaceing(SharedString::from(&format!("{}", cfg.vspaceing)));
+            window.set_hspaceing(SharedString::from(&format!("{}", cfg.hspaceing)));
             window.set_background_color(SharedString::from(&cfg.background));
             window.set_fullscreen(SharedString::from(if cfg.fullscreen {
                 "是"
             } else {
                 "否"
             }));
-            window.set_logical_size(SharedString::from(&format!("{}", cfg.logical_size)));
             window.set_light_color(SharedString::from(&cfg.light_color));
             window.set_frame_delay(SharedString::from(&format!("{}毫秒", cfg.frame_delay)));
             window.set_fade_speed(SharedString::from(&format!("{}", cfg.fade_speed)));
@@ -94,13 +94,13 @@ pub fn open() {
             } else if cmd == "fullscreen" {
                 cfg.fullscreen = val == "是";
                 false
-            } else if cmd == "spaceing" {
-                cfg.spaceing = val.parse().unwrap();
+            } else if cmd == "vspaceing" {
+                cfg.vspaceing = val.parse().unwrap();
                 false
-            } else if cmd == "logical_size" {
-                cfg.logical_size = val.parse().unwrap();
+            } else if cmd == "hspaceing" {
+                cfg.hspaceing = val.parse().unwrap();
                 false
-            } else if cmd == "fade_speed" {
+            }else if cmd == "fade_speed" {
                 cfg.fade_speed = val.parse().unwrap();
                 false
             } else if cmd == "light_speed" {

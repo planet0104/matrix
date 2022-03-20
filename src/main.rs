@@ -25,7 +25,7 @@ fn main() -> Result<()> {
     }
 
     //启动屏保
-    app::start()
+    app::run()
 }
 
 #[cfg(target_arch = "wasm32")]

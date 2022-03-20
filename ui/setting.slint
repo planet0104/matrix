@@ -9,7 +9,8 @@ SettingWindow := Window {
     property <string> text_color;
     property <string> font_type;
     property <string> font_size;
-    property <string> spaceing;
+    property <string> hspaceing;
+    property <string> vspaceing;
     property <string> background_color;
     property <string> fullscreen;
     property <string> logical_size;
@@ -32,7 +33,7 @@ SettingWindow := Window {
             }
             VerticalBox {
                 padding-top: 0px;
-                Text { font-size: 16px; font-weight: 600; text: "matrix 1.0.3"; }
+                Text { font-size: 16px; font-weight: 600; text: "matrix 1.0.4"; }
                 Text { font-size: 12px; text: "作者: Jia Ye  Email: planet2@qq.com"; }
                 Text { font-size: 12px; text: "源码: https://github.com/planet0104/matrix"; }
             }
@@ -64,16 +65,7 @@ SettingWindow := Window {
             }
         }
         HorizontalLayout{
-            HorizontalBox {
-                width: 170px;
-                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "文字颜色:"; } }
-                edit_color := LineEdit {
-                    edited => { value_change("color", edit_color.text) }
-                    width: 90px;
-                    text: text_color;
-                    placeholder-text: "rgb(0, 255, 70)";
-                }
-            }
+            
             HorizontalBox {
                 width: 170px;
                 VerticalBox {padding-right: 0; Text { font-weight: 700; text: "内置字体:"; } }
@@ -96,12 +88,22 @@ SettingWindow := Window {
             }
             HorizontalBox {
                 width: 170px;
-                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "字符间距:"; } }
-                cb_spaceing := ComboBox {
-                    selected => { value_change("spaceing", cb_spaceing.current-value) }
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "水平间距:"; } }
+                cb_hspaceing := ComboBox {
+                    selected => { value_change("hspaceing", cb_hspaceing.current-value) }
                     width: 90px;
                     model: ["0", "2", "4", "6", "8", "10"];
-                    current-value: spaceing;
+                    current-value: hspaceing;
+                }
+            }
+            HorizontalBox {
+                width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "垂直间距:"; } }
+                cb_vspaceing := ComboBox {
+                    selected => { value_change("vspaceing", cb_vspaceing.current-value) }
+                    width: 90px;
+                    model: ["0", "2", "4", "6", "8", "10"];
+                    current-value: vspaceing;
                 }
             }
         }
@@ -118,22 +120,22 @@ SettingWindow := Window {
             }
             HorizontalBox {
                 width: 170px;
+                VerticalBox {padding-right: 0; Text { font-weight: 700; text: "文字颜色:"; } }
+                edit_color := LineEdit {
+                    edited => { value_change("color", edit_color.text) }
+                    width: 90px;
+                    text: text_color;
+                    placeholder-text: "rgb(0, 255, 70)";
+                }
+            }
+            HorizontalBox {
+                width: 170px;
                 VerticalBox {padding-right: 0; Text { font-weight: 700; text: "全屏模式:"; } }
                 cb_fullscreen := ComboBox {
                     selected => { value_change("fullscreen", cb_fullscreen.current-value) }
                     width: 90px;
                     model: ["是", "否"];
                     current-value: fullscreen;
-                }
-            }
-            HorizontalBox {
-                width: 170px;
-                VerticalBox {padding-right: 4px; Text { font-weight: 700; text: "分 辨 率:"; } }
-                cb_logical_size := ComboBox {
-                    selected => { value_change("logical_size", cb_logical_size.current-value) }
-                    width: 90px;
-                    model: ["640", "720", "900", "1200", "1600", "1900"];
-                    current-value: logical_size;
                 }
             }
             HorizontalBox {
@@ -154,7 +156,7 @@ SettingWindow := Window {
                 cb_frame_delay := ComboBox {
                     selected => { value_change("frame_delay", cb_frame_delay.current-value) }
                     width: 90px;
-                    model: ["40毫秒", "50毫秒", "60毫秒", "80毫秒", "100毫秒"];
+                    model: ["40毫秒", "50毫秒", "80毫秒", "160毫秒", "200毫秒"];
                     current-value: frame_delay;
                 }
             }
@@ -164,7 +166,7 @@ SettingWindow := Window {
                 cb_fade_speed := ComboBox {
                     selected => { value_change("fade_speed", cb_fade_speed.current-value) }
                     width: 90px;
-                    model: ["2", "4", "6", "8", "10"];
+                    model: ["4", "8", "12", "16", "20"];
                     current-value: fade_speed;
                 }
             }
