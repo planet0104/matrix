@@ -1,16 +1,10 @@
 # matrix 屏保
 
-[![](https://img.shields.io/badge/latest-1.0.5-red.svg)](https://github.com/planet0104/matrix/releases)
-
-**运行占用1~3%的CPU**
+[![](https://img.shields.io/badge/latest-1.0.6-red.svg)](https://github.com/planet0104/matrix/releases)
 
 ## 下载地址
 
-下载地址：
-
-[Releases(OpenGL)](https://github.com/planet0104/matrix/releases)
-
-[Releases](https://github.com/planet0104/matrix/releases/tag/1.0.3)
+下载地址： [Releases](https://github.com/planet0104/matrix/releases)
 
 ## 安装屏保
 
@@ -36,10 +30,6 @@
 **ESC** >> 退出程序(或者移动鼠标600ms)
 
 ## 运行截图
-
-<img src="images/05.png" />
-
-<img src="images/06.png" />
 
 <img src="images/01.png" />
 

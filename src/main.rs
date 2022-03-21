@@ -1,4 +1,4 @@
-// #![windows_subsystem = "windows"]
+#![windows_subsystem = "windows"]
 
 use anyhow::Result;
 mod app;
@@ -27,9 +27,9 @@ fn main() -> Result<()> {
     }
 
     //启动屏保
-    if let Err(err) = app::run() {
-        eprintln!("{:?}", err);
-        alert("错误", &format!("启动失败: {:?}", err));
+    if let Err(err) = app::start() {
+        eprintln!("启动失败:{:?}", err);
+        alert("错误", &format!("启动失败:{:?}", err));
     }
     Ok(())
 }

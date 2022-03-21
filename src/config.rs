@@ -1,23 +1,23 @@
 use anyhow::Result;
 use app_dirs::{AppDataType, AppInfo};
+use font_kit::font::Font;
 use once_cell::sync::Lazy;
+use raqote::Color;
 use serde::{Deserialize, Serialize};
 use std::{
     fs::{self, File},
     io::{Read, Write},
     path::PathBuf,
+    sync::Arc,
+    vec,
 };
 
-use crate::setting::alert;
-
 // 凤凰点阵体
-pub const FONT_VONWAON: &[u8] = include_bytes!("../fonts/VonwaonBitmap-16px.ttf");
+const FONT_VONWAON: &[u8] = include_bytes!("../fonts/VonwaonBitmap-16px.ttf");
 // 小篆
 const FONT_XIAO_ZHUAN: &[u8] = include_bytes!("../fonts/xiaozhuan.ttf");
 // 方正甲骨文
 const FONT_FZ_JIAGUWEN: &[u8] = include_bytes!("../fonts/FZJiaGuWen.ttf");
-// 永无BUG
-const FONT_WUFO: &[u8] = include_bytes!("../fonts/无佛.ttf");
 
 pub const CHARACTERS_JAP: &str = r#"
     アイウエオカキクケコサシスセソタチツテトナニヌ
@@ -159,40 +159,22 @@ pub fn read_config_file() -> Option<Config> {
 }
 
 /// 字体 "1"->凤凰点阵体 "2"->小篆 "3"->甲骨文 "字体文件名.ttf"->自定义ttf文件
-pub fn load_font_file(cfg: &Config) -> Vec<u8> {
+pub fn load_font(cfg: &Config) -> Result<Font> {
     let font_name = cfg.font.clone();
-    if font_name == "2" {
+
+    let bytes = if font_name == "2" {
         FONT_XIAO_ZHUAN.to_vec()
     } else if font_name == "3" {
         FONT_FZ_JIAGUWEN.to_vec()
-    } else if font_name == "4" {
-        FONT_WUFO.to_vec()
     } else if font_name == "1" {
         FONT_VONWAON.to_vec()
     } else {
-        match File::open(&font_name) {
-            Ok(mut file) => {
-                let mut buf = vec![];
-                if let Err(err) = file.read_to_end(&mut buf) {
-                    alert(
-                        "错误",
-                        &format!("字体文件读取失败:{} 错误原因:{:?}", font_name, err),
-                    );
-                    FONT_VONWAON.to_vec()
-                } else {
-                    println!("字体文件读取成功：{}", font_name);
-                    buf
-                }
-            }
-            Err(err) => {
-                alert(
-                    "错误",
-                    &format!("字体文件读取失败:{} 错误原因:{:?}", font_name, err),
-                );
-                FONT_VONWAON.to_vec()
-            }
-        }
-    }
+        let mut f = File::open(font_name)?;
+        let mut bytes = vec![];
+        f.read_to_end(&mut bytes)?;
+        bytes
+    };
+    Ok(Font::from_bytes(Arc::new(bytes), 0)?)
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -203,15 +185,16 @@ pub struct Config {
     pub font_size: i32,
     pub color: String,
     pub light_color: String,
-    pub light_speed: i32,
+    pub mousequit: bool,
     pub background: String,
     pub fade_speed: i32,
-    pub vspaceing: u32,
-    pub hspaceing: u32,
+    pub spaceing: u32,
     pub fullscreen: bool,
+    pub window_width: u32,
+    pub window_height: u32,
+    pub logical_size: u32,
     pub mutation_rate: f32,
     pub frame_delay: u64,
-    pub mousequit: bool,
 }
 
 impl Default for Config {
@@ -219,37 +202,44 @@ impl Default for Config {
         Config {
             characters: "01".to_string(),
             font: "1".to_string(),
-            font_size: 20,
+            font_size: 12,
             color: "rgb(0, 255, 70)".to_string(),
             light_color: "white".to_string(),
-            light_speed: 200,
+            mousequit: true,
             background: "black".to_string(),
             fade_speed: 10,
-            hspaceing: 6,
-            vspaceing: 6,
-            mousequit: true,
+            spaceing: 0,
             #[cfg(debug_assertions)]
             fullscreen: false,
             #[cfg(not(debug_assertions))]
             fullscreen: true,
+            window_width: 900,
+            window_height: 600,
+            logical_size: 640,
             mutation_rate: 0.001,
+            #[cfg(debug_assertions)]
+            frame_delay: 500,
+            #[cfg(not(debug_assertions))]
             frame_delay: 50,
         }
     }
 }
 
 impl Config {
-    pub fn parse_color(color: &str, default: csscolorparser::Color) -> [f32; 4] {
+    pub fn parse_color(color: &str, default: csscolorparser::Color) -> Color {
         let color = csscolorparser::parse(color).unwrap_or(default);
-        [
-            color.r as f32,
-            color.g as f32,
-            color.b as f32,
-            color.a as f32,
-        ]
+
+        Color::new(
+            (color.a * 255.0) as u8,
+            (color.r * 255.0) as u8,
+            (color.g * 255.0) as u8,
+            (color.b * 255.0) as u8,
+        )
     }
 
     pub fn characters(&self) -> String {
+        // let bytes = base64::decode(&self.characters).expect("解析失败");
+        // String::from_utf8_lossy(&bytes).to_string()
         self.characters.clone()
     }
 
@@ -263,21 +253,22 @@ impl Config {
     }
 
     pub fn set_characters(&mut self, characters: &str) {
+        // let encoded = base64::encode(characters.as_bytes());
         self.characters = characters.to_string();
     }
 
-    pub fn color(&self) -> [f32; 4] {
+    pub fn color(&self) -> Color {
         Self::parse_color(&self.color, csscolorparser::Color::from_rgb_u8(0, 255, 70))
     }
 
-    pub fn light_color(&self) -> [f32; 4] {
+    pub fn light_color(&self) -> Color {
         Self::parse_color(
             &self.light_color,
             csscolorparser::Color::from_rgb_u8(255, 255, 255),
         )
     }
 
-    pub fn background(&self) -> [f32; 4] {
+    pub fn background(&self) -> Color {
         Self::parse_color(
             &self.background,
             csscolorparser::Color::from_rgb_u8(0, 0, 0),

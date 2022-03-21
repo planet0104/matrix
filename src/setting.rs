@@ -1,4 +1,5 @@
 //设置程序
+
 use std::{cell::RefCell, env::current_exe, process::Command, rc::Rc};
 
 use crate::config::{
@@ -36,18 +37,22 @@ pub fn open() {
             };
             window.set_font_type(SharedString::from(font_type));
             window.set_font_size(SharedString::from(&format!("{}", cfg.font_size)));
-            window.set_vspaceing(SharedString::from(&format!("{}", cfg.vspaceing)));
-            window.set_hspaceing(SharedString::from(&format!("{}", cfg.hspaceing)));
+            window.set_spaceing(SharedString::from(&format!("{}", cfg.spaceing)));
             window.set_background_color(SharedString::from(&cfg.background));
+            window.set_fullscreen(SharedString::from(if cfg.fullscreen {
+                "是"
+            } else {
+                "否"
+            }));
+            window.set_logical_size(SharedString::from(&format!("{}", cfg.logical_size)));
+            window.set_light_color(SharedString::from(&cfg.light_color));
+            window.set_frame_delay(SharedString::from(&format!("{}毫秒", cfg.frame_delay)));
+            window.set_fade_speed(SharedString::from(&format!("{}", cfg.fade_speed)));
             window.set_mousequit(SharedString::from(if cfg.mousequit {
                 "滑动退出"
             } else {
                 "不监听"
             }));
-            window.set_light_color(SharedString::from(&cfg.light_color));
-            window.set_frame_delay(SharedString::from(&format!("{}毫秒", cfg.frame_delay)));
-            window.set_fade_speed(SharedString::from(&format!("{}", cfg.fade_speed)));
-            window.set_light_speed(SharedString::from(&format!("{}", cfg.light_speed)));
             window.set_mutation_rate(SharedString::from(&format!("{}", cfg.mutation_rate)));
         }
     };
@@ -72,51 +77,15 @@ pub fn open() {
                 if val == "小篆" {
                     cfg.set_characters(CHARACTERS_ZHUANTI);
                     cfg.font = "2".to_string();
-                    cfg.font_size = 20;
-                    cfg.vspaceing = 8;
-                    cfg.hspaceing = 8;
-                    cfg.frame_delay = 50;
-                    cfg.fade_speed = 8;
                 } else if val == "甲骨文" {
                     cfg.set_characters(CHARACTERS_JIAGUWEN);
                     cfg.font = "3".to_string();
-                    cfg.font_size = 20;
-                    cfg.vspaceing = 8;
-                    cfg.hspaceing = 2;
-                    cfg.frame_delay = 50;
-                    cfg.fade_speed = 8;
                 } else if val == "日文" {
                     cfg.set_characters(CHARACTERS_JAP);
                     cfg.font = "1".to_string();
-                    cfg.font_size = 16;
-                    cfg.vspaceing = 6;
-                    cfg.hspaceing = 6;
-                    cfg.frame_delay = 50;
-                    cfg.fade_speed = 8;
-                } else if val == "永无BUG1" {
-                    cfg.set_characters("无佛");
-                    cfg.font = "4".to_string();
-                    cfg.font_size = 32;
-                    cfg.vspaceing = 16;
-                    cfg.hspaceing = 16;
-                    cfg.frame_delay = 80;
-                    cfg.fade_speed = 12;
-                } else if val == "永无BUG2" {
-                    cfg.set_characters("01");
-                    cfg.font = "4".to_string();
-                    cfg.font_size = 64;
-                    cfg.vspaceing = 25;
-                    cfg.hspaceing = 0;
-                    cfg.frame_delay = 80;
-                    cfg.fade_speed = 12;
                 } else {
                     cfg.set_characters(CHARACTERS_01);
                     cfg.font = "1".to_string();
-                    cfg.font_size = 20;
-                    cfg.vspaceing = 6;
-                    cfg.hspaceing = 6;
-                    cfg.frame_delay = 50;
-                    cfg.fade_speed = 8;
                 }
                 true
             } else if cmd == "font" {
@@ -153,28 +122,28 @@ pub fn open() {
                 }
                 false
             } else if cmd == "font_size" {
-                cfg.font_size = val.parse().unwrap();
+                cfg.font_size = val.parse().unwrap_or(12);
                 false
             } else if cmd == "mousequit" {
                 cfg.mousequit = val == "滑动退出";
                 false
-            } else if cmd == "vspaceing" {
-                cfg.vspaceing = val.parse().unwrap();
+            } else if cmd == "fullscreen" {
+                cfg.fullscreen = val == "是";
                 false
-            } else if cmd == "hspaceing" {
-                cfg.hspaceing = val.parse().unwrap();
+            } else if cmd == "spaceing" {
+                cfg.spaceing = val.parse().unwrap_or(0);
+                false
+            } else if cmd == "logical_size" {
+                cfg.logical_size = val.parse().unwrap_or(640);
                 false
             } else if cmd == "fade_speed" {
-                cfg.fade_speed = val.parse().unwrap();
-                false
-            } else if cmd == "light_speed" {
-                cfg.light_speed = val.parse().unwrap();
+                cfg.fade_speed = val.parse().unwrap_or(10);
                 false
             } else if cmd == "mutation_rate" {
-                cfg.mutation_rate = val.parse().unwrap();
+                cfg.mutation_rate = val.parse().unwrap_or(0.001);
                 false
             } else if cmd == "frame_delay" {
-                cfg.frame_delay = val.replace("毫秒", "").parse().unwrap();
+                cfg.frame_delay = val.replace("毫秒", "").parse().unwrap_or(50);
                 false
             } else if cmd == "color" {
                 if let Ok(_color) = csscolorparser::parse(&val) {
@@ -200,7 +169,7 @@ pub fn open() {
             } else if cmd == "save" {
                 //保存配置
                 if let Err(err) = write_config(&cfg.clone()) {
-                    alert("错误", &format!("配置文件写入失败:{:?}", err));
+                    eprintln!("配置文件写入失败:{:?}", err);
                 }
                 quit_event_loop();
                 false
@@ -228,6 +197,6 @@ pub fn alert(title: &str, text: &str) {
         .set_text(text)
         .show_alert()
     {
-        println!("{:?}", err);
+        eprintln!("{:?}", err);
     }
 }
